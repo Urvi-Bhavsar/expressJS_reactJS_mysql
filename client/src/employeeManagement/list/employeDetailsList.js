@@ -10,7 +10,7 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { columns } from "../config/employeeListColumns";
-import "../App.css";
+import "../../App.css";
 import { useNavigate } from "react-router";
 import { useEmployeeDetailsList } from "../hooks/useEmployeeDetailsList";
 
@@ -53,6 +53,7 @@ const EmployeDetailsList = () => {
               navigate("/edit-employee-details", {
                 state: {
                   ele: record,
+                  isEdit: true,
                 },
               })
             }

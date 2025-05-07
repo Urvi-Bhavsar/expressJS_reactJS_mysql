@@ -44,5 +44,50 @@ const employeeDetailsSchema = yup.object().shape({
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|io|in)$/,
       "Email must end with .com, .io, or .in"
     ),
+
+  mobile_no: yup
+    .number()
+    .required("Mobile No is required.")
+    .test(
+      "max-length",
+      "Mobile No should have a maximum length of 2",
+      (value) => {
+        return value && String(value).length == 10;
+      }
+    ),
+
+  date_of_birth: yup.object().required("Date of Birth is required."),
+
+  gender: yup.string().required("Gender is required."),
+
+  designation: yup.object().required("Designation is required"),
+
+  skills: yup.array().test("max-length", "Skills is required", (value) => {
+    return !!value.length;
+  }),
+
+  country: yup.object().required("Country is required."),
+
+  state: yup
+    .object()
+    .nullable()
+    .test("required", "State is required.", (value, { parent }) => {
+      if (!!parent?.country & !value) {
+        return false;
+      } else {
+        return true;
+      }
+    }),
+
+  city: yup
+    .object()
+    .nullable()
+    .test("required", "City is required.", (value, { parent }) => {
+      if (!!(parent?.country && parent?.state) & !value) {
+        return false;
+      } else {
+        return true;
+      }
+    }),
 });
 export { employeeDetailsSchema };

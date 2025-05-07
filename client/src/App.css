@@ -14,6 +14,41 @@
 .ant-layout-sider {
   transition: width 0.3s ease-in-out;
 }
+/* Remove white background from the entire sidebar */
+.ant-layout-sider,
+.ant-menu {
+  background-color: #ddd4d0 !important; /* Base sidebar background */
+}
+
+/* Ensure text color remains black */
+.ant-menu-item,
+.ant-menu-submenu-title {
+  color: black !important;
+}
+
+/* Change background color of selected and hovered menu items */
+.ant-menu-item:hover,
+.ant-menu-submenu-title:hover,
+.ant-menu-item-selected {
+  background-color: #9e9996 !important; /* Darker shade */
+  color: black !important;
+}
+
+/* Submenu background when expanded */
+.submenu-dark-bg .ant-menu {
+  background-color: #9e9996 !important; /* Darker submenu background */
+}
+
+/* Ensure submenu text is black */
+.submenu-dark-bg .ant-menu-item {
+  color: black !important;
+}
+
+/* Submenu hover effect */
+.submenu-dark-bg .ant-menu-item:hover {
+  background-color: #7d7875 !important; /* Slightly darker on hover */
+}
+
 .sidebar {
   background: #ddd4d0;
   color: black;
@@ -23,7 +58,9 @@
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
-
+.datepicker{
+  margin-top: 8px;
+}
 /* Form Input */
 .form-input {
   width: 100%;
