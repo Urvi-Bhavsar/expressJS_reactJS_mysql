@@ -127,6 +127,16 @@ const deleteEmployeeById = (id, callback) => {
   });
 };
 
+const retriveEmployeeDetailsById = (id, callback) => {
+  const query = `
+    SELECT * FROM employeeDetails
+    WHERE employeeId = ?
+  `;
+  db.query(query, [id], (err, result) => {
+    callback(err, result);
+  });
+};
+
 const createTableIfNotExists = (callback) => {
   const query = `
     CREATE TABLE IF NOT EXISTS employeeDetails (
@@ -188,4 +198,5 @@ module.exports = {
   downloadEmployeeDetails,
   uploadEmployeeDetails,
   getTotalEmployeesCount,
+  retriveEmployeeDetailsById,
 };

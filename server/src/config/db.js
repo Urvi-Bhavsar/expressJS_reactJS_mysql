@@ -5,7 +5,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "root",
-  database: "my_db",
+  database: "mern_stack_db",
 });
 
 db.connect((err) => {

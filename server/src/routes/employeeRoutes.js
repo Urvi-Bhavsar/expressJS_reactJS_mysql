@@ -6,6 +6,12 @@ const {
   deleteEmployeeHandler,
   downloadEmployeeDataHandler,
   handleUploadEmployeeDetails,
+  retriveEmployeeDetails,
+  getAllDesignations,
+  getAllSkills,
+  getAllCountries,
+  getAllStates,
+  getAllCities,
 } = require("../controllers/employeeController");
 const {
   createEmployeeValidation,
@@ -40,8 +46,13 @@ const upload = multer({ storage });
 
 const router = express.Router();
 
-router.post("/create", createEmployeeValidation, createEmployeeHandler);
+router.post(
+  "/employee/create",
+  createEmployeeValidation,
+  createEmployeeHandler
+);
 router.get("/get-employee-details", getAllEmployeesHandler);
+router.patch("/retrive-employee-details/:id", retriveEmployeeDetails);
 router.put(
   "/update-employee-details/:id",
   createEmployeeValidation,
@@ -54,5 +65,10 @@ router.post(
   upload.single("file"),
   handleUploadEmployeeDetails
 );
+router.get("/designations", getAllDesignations);
+router.get("/skills", getAllSkills);
+router.get("/countries", getAllCountries);
+router.get("/states", getAllStates);
+router.get("/cities", getAllCities);
 
 module.exports = router;

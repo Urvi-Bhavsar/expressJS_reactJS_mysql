@@ -7,6 +7,7 @@ const {
   downloadEmployeeDetails,
   uploadEmployeeDetails,
   getTotalEmployeesCount,
+  retriveEmployeeDetailsById,
 } = require("../models/employeeModel");
 const transporter = require("../config/mailer");
 require("dotenv").config();
@@ -54,11 +55,11 @@ const createEmployeeHandler = async (req, res) => {
               filename: "text1.txt",
               content: "hello world!",
             },
-            {
-              // binary buffer as an attachment
-              filename: "Urvi_Bhavsar_React (2).docx",
-              path: "/home/dell/Downloads/Urvi_Bhavsar_React (2).docx",
-            },
+            // {
+            //   // binary buffer as an attachment
+            //   filename: "Urvi_Bhavsar_React (2).docx",
+            //   path: "/home/dell/Downloads/Urvi_Bhavsar_React (2).docx",
+            // },
           ],
           html: "<h1>Welcome</h1><p>That was easy!</p>This is a test email sent using Nodemailer .env. https://medium.com/@y.mehnati_49486/how-to-send-an-email-from-your-gmail-account-with-nodemailer-837bf09a7628",
         });
@@ -71,6 +72,21 @@ const createEmployeeHandler = async (req, res) => {
       });
     }
   );
+};
+
+const retriveEmployeeDetails = (req, res) => {
+  const { id } = req.params;
+  retriveEmployeeDetailsById(id, (err, result) => {
+    if (err) {
+      return res
+        .status(500)
+        .send({ message: "Failed to retrive employee details", err });
+    }
+    res.send({
+      data: result?.[0],
+      message: "Retrive employee details successfully",
+    });
+  });
 };
 
 const getAllEmployeesHandler = (req, res) => {
@@ -143,8 +159,6 @@ const updateEmployeeHandler = (req, res) => {
     email,
     officeDays,
     (err, result) => {
-      console.log("resulltttt", result);
-
       if (err) {
         return res
           .status(500)
@@ -331,11 +345,11 @@ const handleUploadEmployeeDetails = async (req, res) => {
             filename: "text1.txt",
             content: "hello world!",
           },
-          {
-            // binary buffer as an attachment
-            filename: "Urvi_Bhavsar_React (2).docx",
-            path: "/home/dell/Downloads/Urvi_Bhavsar_React (2).docx",
-          },
+          // {
+          //   // binary buffer as an attachment
+          //   filename: "Urvi_Bhavsar_React (2).docx",
+          //   path: "/home/dell/Downloads/Urvi_Bhavsar_React (2).docx",
+          // },
         ],
         html: "<h1>Welcome</h1><p>That was easy!</p>This is a test email sent using Nodemailer .env. to downloaded emloyee https://medium.com/@y.mehnati_49486/how-to-send-an-email-from-your-gmail-account-with-nodemailer-837bf09a7628",
       });
@@ -351,6 +365,87 @@ const handleUploadEmployeeDetails = async (req, res) => {
   }
 };
 
+const getAllDesignations = async (req, res) => {
+  res.send({
+    data: [
+      { id: 1, name: "Software Engineer" },
+      { id: 2, name: "Senior Developer" },
+      { id: 3, name: "Project Manager" },
+      { id: 4, name: "HR Manager" },
+      { id: 5, name: "Team Lead" },
+    ],
+  });
+};
+
+const getAllSkills = async (req, res) => {
+  res.send({
+    data: [
+      { id: 1, name: "React JS" },
+      { id: 2, name: "Node.js" },
+      { id: 3, name: "Express JS" },
+      { id: 4, name: "Angular JS" },
+      { id: 5, name: "Python" },
+      { id: 6, name: "Java" },
+      { id: 7, name: "ROR" },
+    ],
+  });
+};
+
+const getAllCountries = async (req, res) => {
+  res.send({
+    data: countries,
+  });
+};
+
+const countries = [
+  { id: 1, name: "USA" },
+  { id: 2, name: "India" },
+];
+
+const states = {
+  1: [
+    { id: 1, name: "California", countryId: 1 },
+    { id: 2, name: "New York", countryId: 1 },
+  ],
+  2: [
+    { id: 3, name: "Gujarat", countryId: 2 },
+    { id: 4, name: "Maharashtra", countryId: 2 },
+  ],
+};
+
+const getAllStates = async (req, res) => {
+  const countryID = req.query.countryID;
+  res.send({
+    data: states[countryID],
+  });
+};
+
+const getAllCities = async (req, res) => {
+  const stateID = req.query.stateID;
+  res.send({
+    data: cities[stateID],
+  });
+};
+
+const cities = {
+  1: [
+    { id: 1, name: "Los Angeles", stateId: 1 },
+    { id: 2, name: "San Francisco", stateId: 1 },
+  ],
+  2: [
+    { id: 3, name: "New York City", stateId: 2 },
+    { id: 4, name: "Buffalo", stateId: 2 },
+  ],
+  3: [
+    { id: 5, name: "Surat", stateId: 3 },
+    { id: 6, name: "Ahmedabad", stateId: 3 },
+  ],
+  4: [
+    { id: 7, name: "Mumbai", stateId: 4 },
+    { id: 8, name: "Pune", stateId: 4 },
+  ],
+};
+
 module.exports = {
   createEmployeeHandler,
   getAllEmployeesHandler,
@@ -358,4 +453,10 @@ module.exports = {
   deleteEmployeeHandler,
   downloadEmployeeDataHandler,
   handleUploadEmployeeDetails,
+  retriveEmployeeDetails,
+  getAllDesignations,
+  getAllSkills,
+  getAllCountries,
+  getAllStates,
+  getAllCities,
 };
