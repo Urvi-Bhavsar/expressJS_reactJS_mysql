@@ -32,7 +32,7 @@ function App() {
   return (
     <Layout style={{ minHeight: "100vh", overflow: "hidden" }}>
       {/* Sidebar Component */}
-      <Sidebar />
+      <Sidebar collapsed={collapsed} />
 
       {/* Main Layout */}
       <Layout style={{ marginLeft: collapsed ? 80 : 250 }}>
