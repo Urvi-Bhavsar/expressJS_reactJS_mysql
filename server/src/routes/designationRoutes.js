@@ -8,7 +8,6 @@ const {
   updateDesignationHandler,
   deleteDesignationHandler,
 } = require("../controllers/designationController");
-const { deleteDesignationById } = require("../models/designationModel");
 
 const router = express.Router();
 

@@ -75,6 +75,8 @@ const getAllDesignationHandler = (req, res) => {
         sortField,
         search,
         (err, designations) => {
+          console.log("err", err, designations);
+
           if (err) {
             return res.status(500).send({
               message: "Failed to fetch designations",
@@ -84,13 +86,12 @@ const getAllDesignationHandler = (req, res) => {
 
           const next =
             currentPage * limit < totalEntries ? currentPage + 1 : null;
-
           res.send({
             data: designations?.map((row) => ({
               ...row,
               department: {
-                value: row.departmentId,
-                label: row.departmentName,
+                value: departments.find((d) => d.id == row.department).id,
+                label: departments.find((d) => d.id == row.department).name,
               },
             })),
             currentPage: !designations.length ? currentPage - 1 : currentPage,
@@ -104,6 +105,20 @@ const getAllDesignationHandler = (req, res) => {
     });
   });
 };
+const departments = [
+  { id: 1, name: "HR" },
+  { id: 2, name: "Engineering" },
+  { id: 3, name: "Marketing" },
+  { id: 4, name: "Sales" },
+  // …add or remove as needed
+];
+
+/**
+ * Returns that array, wrapped in a Promise for consistency.
+ */
+function getAllDepartmentsFromDB() {
+  return Promise.resolve(departments);
+}
 
 const updateDesignationHandler = (req, res) => {
   const { id } = req.params;
@@ -154,4 +169,5 @@ module.exports = {
   getAllDesignationHandler,
   updateDesignationHandler,
   deleteDesignationHandler,
+  getAllDepartmentsFromDB,
 };

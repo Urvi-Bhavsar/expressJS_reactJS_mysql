@@ -14,6 +14,9 @@ app.use(express.json());
 app.use("/", require("./routes/employeeRoutes"));
 
 app.use("/designation", require("./routes/designationRoutes"));
+app.use("/departments", require("./routes/departmentRoutes"));
+// app.use("/countries", require("./routes/countryRoutes"));
+
 // Start the server
 const PORT = process.env.PORT;
 
