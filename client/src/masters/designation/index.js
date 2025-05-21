@@ -22,6 +22,7 @@ import validationSchema from "./schema";
 import Axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { debounce } from "lodash";
+import axios from "axios";
 
 const EditableCell = ({
   editing,
@@ -29,6 +30,7 @@ const EditableCell = ({
   type,
   options,
   children,
+  handleDropdownOpen,
   handleDropdownChange,
   ...restProps
 }) => {
@@ -47,8 +49,9 @@ const EditableCell = ({
                       {...field}
                       style={{ width: "100%" }}
                       onChange={handleDropdownChange}
+                      onDropdownVisibleChange={handleDropdownOpen}
                     >
-                      {options.map((option) => (
+                      {options?.map((option) => (
                         <Select.Option
                           label={option.label}
                           value={option.value}
@@ -96,6 +99,8 @@ const DesignationEditableTable = () => {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [search, setSearch] = useState("");
+  const [departmentOptions, setDepartmentOptions] = useState(null);
+
   useEffect(() => {
     getDesignationDetails();
   }, []);
@@ -174,6 +179,21 @@ const DesignationEditableTable = () => {
     getDesignationDetails(currentPage, pageSize, field, ordering);
   };
 
+  const handleDropdownOpen = (open) => {
+    console.log("open", open);
+    if (open) {
+      Axios.get("http://localhost:3001/departments")
+        .then((res) => {
+          console.log("fetched departments:", res.data);
+          setDepartmentOptions(res.data);
+        })
+        .catch((err) => {
+          console.error("failed to load departments", err);
+          toast.error("Could not load departments");
+        });
+    }
+  };
+
   const handleSave = (values) => {
     const newData = data.map((item) =>
       item.designationId === editingRow ? { ...item, ...values } : item
@@ -244,6 +264,24 @@ const DesignationEditableTable = () => {
         editing: editingRow === record.designationId,
       }),
     },
+    // {
+    //   title: "Department",
+    //   dataIndex: "department",
+    //   sorter: true,
+    //   onCell: (record) => ({
+    //     type: "select",
+    //     dataIndex: "department",
+    //     editing: editingRow === record.designationId,
+    //     options: [
+    //       { value: "1", label: "HR" },
+    //       { value: "2", label: "Engineering" },
+    //       { value: "3", label: "Marketing" },
+    //       { value: "4", label: "Sales" },
+    //     ],
+    //     handleDropdownChange,
+    //   }),
+    //   render: (value) => value?.label,
+    // },
     {
       title: "Department",
       dataIndex: "department",
@@ -252,12 +290,8 @@ const DesignationEditableTable = () => {
         type: "select",
         dataIndex: "department",
         editing: editingRow === record.designationId,
-        options: [
-          { value: "1", label: "HR" },
-          { value: "2", label: "Engineering" },
-          { value: "3", label: "Marketing" },
-          { value: "4", label: "Sales" },
-        ],
+        options: departmentOptions,
+        handleDropdownOpen,
         handleDropdownChange,
       }),
       render: (value) => value?.label,
