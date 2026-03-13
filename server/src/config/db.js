@@ -1,20 +1,22 @@
-const mysql = require("mysql2");
+const { Sequelize } = require("sequelize");
 
-const db = mysql.createConnection({
-  connectionLimit: 10,
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "mern_stack_db",
-});
+const sequelize = new Sequelize(
+  "mern_stack_db", //DB_NAME
+  "root",// USERNAME
+  "root",// PASSWORD
+  {
+    host: "localhost",
+    dialect: "mysql",
+    logging: false,
+  });
 
-db.connect((err) => {
-  if (err) {
-    console.error("Error connecting to MySQL:", err);
-    process.exit(1);
-  } else {
+sequelize
+  .authenticate()
+  .then(() => {
     console.log("Connected to MySQL database.");
-  }
-});
+  })
+  .catch((err) => {
+    console.error("Unable to connect:", err);
+  });
 
-module.exports = db;
+module.exports = sequelize;

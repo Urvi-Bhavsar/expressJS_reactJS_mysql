@@ -1,7 +1,9 @@
 const express = require("express");
+
 const {
   createDesignationValidation,
 } = require("../serializers/designationSerializer");
+
 const {
   createDesignationHandler,
   getAllDesignationHandler,
