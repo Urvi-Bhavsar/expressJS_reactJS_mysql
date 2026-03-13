@@ -75,8 +75,6 @@ const getAllDesignationHandler = (req, res) => {
         sortField,
         search,
         (err, designations) => {
-          console.log("err", err, designations);
-
           if (err) {
             return res.status(500).send({
               message: "Failed to fetch designations",
@@ -86,6 +84,7 @@ const getAllDesignationHandler = (req, res) => {
 
           const next =
             currentPage * limit < totalEntries ? currentPage + 1 : null;
+
           res.send({
             data: designations?.map((row) => ({
               ...row,
