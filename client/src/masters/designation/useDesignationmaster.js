@@ -33,7 +33,7 @@ export const useDesignationMaster = ({ }) => {
       .then((res) => {
         setIsLoading(false);
         toast.success(res.data.message);
-        setCurrentPage(res.data.currentPage);
+        setCurrentPage(res.data.currentPage || 1);
         setPageSize(res.data.pageSize);
         setTotalEntries(res.data.totalEntries);
         setData(res.data.data);

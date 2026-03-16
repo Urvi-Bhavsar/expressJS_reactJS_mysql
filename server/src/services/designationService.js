@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { designationMaster, createDesignationTableIfNotExists } = require("../models/designationModel");
+const { Designation, createDesignationTableIfNotExists } = require("../models/designationModel");
 
 const createDesignation = async (
   name,
@@ -7,7 +7,7 @@ const createDesignation = async (
   reportingManager,
   department
 ) => {
-  return await designationMaster.create({
+  return await Designation.create({
     name,
     department,
     reportingManager,
@@ -47,7 +47,7 @@ const getAllDesignation = async (
     }
     : {};
 
-  return await designationMaster.findAll({
+  return await Designation.findAll({
     where: whereCondition,
     order: [[field, order]],
     limit,
@@ -62,7 +62,7 @@ const updateDesignationById = async (
   name,
   reportingManager
 ) => {
-  const affectedRows = await designationMaster.update(
+  const affectedRows = await Designation.update(
     {
       name,
       department,
@@ -77,7 +77,7 @@ const updateDesignationById = async (
 };
 
 const deleteDesignationById = async (id) => {
-  const result = await designationMaster.destroy({
+  const result = await Designation.destroy({
     where: { designationId: id },
   });
 

@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const designationMaster = sequelize.define(
-  "designationMaster",
+const Designation = sequelize.define(
+  "Designation",
   {
     designationId: {
       type: DataTypes.INTEGER,
@@ -28,16 +28,16 @@ const designationMaster = sequelize.define(
     },
   },
   {
-    tableName: "designationMaster",
+    tableName: "Designation",
     timestamps: false,
   }
 );
 
 const createDesignationTableIfNotExists = async () => {
-  await designationMaster.sync();
+  await Designation.sync();
 };
 
 module.exports = {
-  designationMaster,
+  Designation,
   createDesignationTableIfNotExists,
 };

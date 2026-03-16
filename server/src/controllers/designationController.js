@@ -19,8 +19,6 @@ const createDesignationHandler = async (req, res) => {
 
     const { department, jobDescription, name, reportingManager } = req.body;
 
-    await createTableIfNotExists();
-
     await createDesignation(name, jobDescription, reportingManager, department);
 
     res.send({
@@ -30,7 +28,7 @@ const createDesignationHandler = async (req, res) => {
   } catch (err) {
     res.status(500).send({
       message: "Failed to create designation",
-      err,
+      err: err.message,   
     });
   }
 };
@@ -47,7 +45,7 @@ const getAllDesignationHandler = async (req, res) => {
       search = "",
     } = req.query;
 
-    const currentPage = parseInt(page, 10);
+    const currentPage = parseInt(page, 10) || 1;
     const limit = parseInt(pageSize, 10);
     const offset = (currentPage - 1) * limit;
 
@@ -69,7 +67,7 @@ const getAllDesignationHandler = async (req, res) => {
           label: departments.find((d) => d.id == row.department)?.name,
         },
       })),
-      currentPage: !designations.length ? currentPage - 1 : currentPage,
+      currentPage,
       pageSize: limit,
       next,
       totalEntries: designations?.length,

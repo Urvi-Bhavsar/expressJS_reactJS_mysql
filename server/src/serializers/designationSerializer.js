@@ -28,6 +28,9 @@ const createDesignationValidation = (req, res, next) => {
         "string.empty": "Name is required.",
         "string.max": "Name should have a maximum length of 20",
       }),
+      department: Joi.number().required().messages({
+        "any.required": "Department is required.",
+      }),
       reportingManager: Joi.string().required().max(20).messages({
         "any.required": "Reporting Manager is required.",
         "string.empty": "Reporting Manager is required.",
