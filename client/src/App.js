@@ -25,6 +25,8 @@ function App() {
         return "Employee Management";
       case "/designations":
         return "Designation";
+      case "/departments":
+        return "Department";
       default:
         return;
     }

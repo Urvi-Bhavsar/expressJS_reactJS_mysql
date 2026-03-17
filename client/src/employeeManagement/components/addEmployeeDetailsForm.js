@@ -15,13 +15,14 @@ const AddEmployeeDetailsForm = () => {
   const employeeDetailsRef = useRef();
   const {
     editID,
+    departmentDropdownData,
     designationDropdownData,
     skillsDropdownData,
     countryDropdownData,
     stateDropdownData,
     cityDropdownData,
     handleFormSubmit,
-    fetchDesignations,
+    fetchDropdownOptions,
   } = useAddEmployee({
     state,
     employeeDetailsRef,
@@ -38,6 +39,7 @@ const AddEmployeeDetailsForm = () => {
         mobile_no: "",
         date_of_birth: null,
         gender: "",
+        department: null,
         designation: null,
         skills: [],
         country: null,
@@ -263,11 +265,51 @@ const AddEmployeeDetailsForm = () => {
                   </Col>
                   <Col xs={12} sm={12} md={12} lg={6}>
                     <div className="form-group">
-                      <label>Designation:</label>
+                      <label>Department:</label>
                       <Select
                         defaultOpen={false}
                         className="datepicker"
                         disabled={state?.isView}
+                        onChange={(selected) => {
+                          setFieldTouched("designation", false)
+                          setFieldValue("designation", null)
+                          setFieldTouched("department");
+                          setFieldValue(
+                            "department",
+                            !!selected
+                              ? {
+                                value: selected?.value,
+                                label: selected?.label,
+                              }
+                              : null
+                          );
+                        }}
+                        value={values.department}
+                        options={departmentDropdownData}
+                        labelInValue
+                        allowClear
+                        size="large"
+                        style={{ width: "100%" }}
+                        onDropdownVisibleChange={() => {
+                          fetchDropdownOptions("department", values);
+                        }}
+                      ></Select>
+                      <div className="error-message">
+                        <b>
+                          {touched.department && errors.department
+                            ? errors.department
+                            : ""}
+                        </b>
+                      </div>
+                    </div>
+                  </Col>
+                  <Col xs={12} sm={12} md={12} lg={6}>
+                    <div className="form-group">
+                      <label>Designation:</label>
+                      <Select
+                        defaultOpen={false}
+                        className="datepicker"
+                        disabled={state?.isView || !values.department}
                         onChange={(selected) => {
                           setFieldTouched("designation");
                           setFieldValue(
@@ -290,7 +332,7 @@ const AddEmployeeDetailsForm = () => {
                         size="large"
                         style={{ width: "100%" }}
                         onDropdownVisibleChange={() => {
-                          fetchDesignations("designation", values);
+                          fetchDropdownOptions("designation", values);
                         }}
                       ></Select>
                       <div className="error-message">
@@ -334,7 +376,7 @@ const AddEmployeeDetailsForm = () => {
                         size="large"
                         style={{ width: "100%" }}
                         onDropdownVisibleChange={() => {
-                          fetchDesignations("skills", values);
+                          fetchDropdownOptions("skills", values);
                         }}
                       ></Select>
                       <div className="error-message">
@@ -378,7 +420,7 @@ const AddEmployeeDetailsForm = () => {
                         size="large"
                         style={{ width: "100%" }}
                         onDropdownVisibleChange={() => {
-                          fetchDesignations("country", values);
+                          fetchDropdownOptions("country", values);
                         }}
                       ></Select>
                       <div className="error-message">
@@ -423,7 +465,7 @@ const AddEmployeeDetailsForm = () => {
                         size="large"
                         style={{ width: "100%" }}
                         onDropdownVisibleChange={() => {
-                          fetchDesignations("state", values);
+                          fetchDropdownOptions("state", values);
                         }}
                       ></Select>
                       <div className="error-message">
@@ -464,7 +506,7 @@ const AddEmployeeDetailsForm = () => {
                         size="large"
                         style={{ width: "100%" }}
                         onDropdownVisibleChange={() => {
-                          fetchDesignations("city", values);
+                          fetchDropdownOptions("city", values);
                         }}
                       ></Select>
                       <div className="error-message">

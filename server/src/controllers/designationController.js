@@ -56,10 +56,10 @@ const getAllDesignationHandler = async (req, res) => {
     res.send({
       data: designations.map((row) => ({
         ...row.dataValues,
-        // department: {
-        //   value: departments.find((d) => d.id == row.Department)?.departmentId,
-        //   label: departments.find((d) => d.id == row.Department)?.name,
-        // },
+        department: {
+          value: row.Department?.departmentId,
+          label: row.Department?.name,
+        },
       })),
       currentPage,
       pageSize: limit,

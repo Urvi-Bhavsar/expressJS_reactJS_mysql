@@ -8,6 +8,7 @@ const useAddEmployee = ({ state, employeeDetailsRef }) => {
 
   const [editID, setEditID] = useState(state?.ele?.employeeId);
   const [designationDropdownData, setDesignationDropdownData] = useState([]);
+  const [departmentDropdownData, setDepartmentDropdownData] = useState([]);
   const [skillsDropdownData, setSkillsDropdownData] = useState([]);
   const [countryDropdownData, setCountryDropdownData] = useState([]);
   const [stateDropdownData, setStateDropdownData] = useState([]);
@@ -53,9 +54,13 @@ const useAddEmployee = ({ state, employeeDetailsRef }) => {
       });
   };
 
-  const fetchDesignations = async (key, values) => {
+  const fetchDropdownOptions = async (key, values) => {
     let response;
     switch (key) {
+      case "department":
+        response = await Axios.get("http://localhost:3001/departments");
+        setDepartmentDropdownData(response.data.data);
+        break;
       case "designation":
         response = await Axios.get("http://localhost:3001/designations");
         setDesignationDropdownData(response.data.data);
@@ -87,13 +92,14 @@ const useAddEmployee = ({ state, employeeDetailsRef }) => {
 
   return {
     editID,
+    departmentDropdownData,
     designationDropdownData,
     skillsDropdownData,
     countryDropdownData,
     stateDropdownData,
     cityDropdownData,
     handleFormSubmit,
-    fetchDesignations,
+    fetchDropdownOptions,
   };
 };
 

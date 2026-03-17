@@ -60,6 +60,8 @@ const employeeDetailsSchema = yup.object().shape({
 
   gender: yup.string().required("Gender is required."),
 
+  department: yup.object().required("Department is required"),
+
   designation: yup.object().required("Designation is required"),
 
   skills: yup.array().test("max-length", "Skills is required", (value) => {
