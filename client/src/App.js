@@ -10,6 +10,7 @@ import Sidebar from "./sidebar";
 import EmployeDetailsList from "./employeeManagement/list/employeDetailsList";
 import EditableTable from "./masters/city";
 import DesignationEditableTable from "./masters/designation";
+import DepartmentEditableTable from "./masters/department";
 
 const { Header, Content } = Layout;
 
@@ -83,11 +84,15 @@ function App() {
             <Route
               path="/view-employee-details"
               element={<AddEmployeeDetailsForm />}
-            />{" "}
+            />
             {/* <Route path="/cities" element={<EditableTable />} />{" "} */}
             <Route
               path="/designations"
               element={<DesignationEditableTable />}
+            />
+            <Route
+              path="/departments"
+              element={<DepartmentEditableTable />}
             />
           </Routes>
         </Content>

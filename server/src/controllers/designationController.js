@@ -1,22 +1,16 @@
+const { createDesignationTableIfNotExists } = require("../models/designationModel");
 const {
   createDesignation,
-  createDesignationTableIfNotExists,
   getAllDesignation,
   updateDesignationById,
   deleteDesignationById,
 } = require("../services/designationService");
 
-const departments = [
-  { id: 1, name: "HR" },
-  { id: 2, name: "Engineering" },
-  { id: 3, name: "Marketing" },
-  { id: 4, name: "Sales" },
-];
+
 
 const createDesignationHandler = async (req, res) => {
   try {
     await createDesignationTableIfNotExists();
-
     const { department, jobDescription, name, reportingManager } = req.body;
 
     await createDesignation(name, jobDescription, reportingManager, department);
@@ -28,7 +22,7 @@ const createDesignationHandler = async (req, res) => {
   } catch (err) {
     res.status(500).send({
       message: "Failed to create designation",
-      err: err.message,   
+      err: err.message,
     });
   }
 };
@@ -62,10 +56,10 @@ const getAllDesignationHandler = async (req, res) => {
     res.send({
       data: designations.map((row) => ({
         ...row.dataValues,
-        department: {
-          value: departments.find((d) => d.id == row.department)?.id,
-          label: departments.find((d) => d.id == row.department)?.name,
-        },
+        // department: {
+        //   value: departments.find((d) => d.id == row.Department)?.departmentId,
+        //   label: departments.find((d) => d.id == row.Department)?.name,
+        // },
       })),
       currentPage,
       pageSize: limit,
@@ -76,7 +70,7 @@ const getAllDesignationHandler = async (req, res) => {
   } catch (err) {
     res.status(500).send({
       message: "Failed to fetch designations",
-      err,
+      err: err.message,
     });
   }
 };
@@ -127,14 +121,11 @@ const deleteDesignationHandler = async (req, res) => {
       err,
     });
   }
-}; function getAllDepartmentsFromDB() {
-  return Promise.resolve(departments);
-}
+};
 
 module.exports = {
   createDesignationHandler,
   getAllDesignationHandler,
   updateDesignationHandler,
   deleteDesignationHandler,
-  getAllDepartmentsFromDB
 };

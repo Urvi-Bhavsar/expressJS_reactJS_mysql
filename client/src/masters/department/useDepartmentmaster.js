@@ -5,9 +5,9 @@ import { useState } from "react";
 import { useRef } from "react";
 import { toast } from "react-toastify";
 
-export const useDesignationMaster = ({ }) => {
+export const useDepartmentmaster = ({ }) => {
 
-  const designationRef = useRef();
+  const departmentRef = useRef();
   const [data, setData] = useState([]);
   const [editingRow, setEditingRow] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,9 +17,8 @@ export const useDesignationMaster = ({ }) => {
   const [sortField, setSortField] = useState("");
   const [sortOrder, setSortOrder] = useState("");
   const [search, setSearch] = useState("");
-  const [departmentOptions, setDepartmentOptions] = useState(null);
 
-  const getDesignationDetails = (
+  const getDepartmentDetails = (
     page = currentPage,
     size = pageSize,
     field = sortField,
@@ -28,7 +27,7 @@ export const useDesignationMaster = ({ }) => {
   ) => {
     setIsLoading(true);
     axios.get(
-      `http://localhost:3001/designation/list/?page=${page}&pageSize=${size}&sortField=${field}&sortOrder=${order}&search=${searchParams}`
+      `http://localhost:3001/departments/list/?page=${page}&pageSize=${size}&sortField=${field}&sortOrder=${order}&search=${searchParams}`
     )
       .then((res) => {
         setIsLoading(false);
@@ -44,21 +43,19 @@ export const useDesignationMaster = ({ }) => {
   const handleAddRow = () => {
     if (editingRow !== null) return;
     const newRow = {
-      designationId: Math.random(),
+      departmentId: Math.random(),
       name: "",
-      department: null,
-      reportingManager: "",
-      jobDescription: "",
+      description: "",
       isNew: true,
     };
     setData([newRow, ...data]);
-    setEditingRow(newRow.designationId);
+    setEditingRow(newRow.departmentId);
   };
 
   const handlePageChange = (page, size) => {
     setCurrentPage(page);
     setPageSize(size);
-    getDesignationDetails(page, size, sortField, sortOrder);
+    getDepartmentDetails(page, size, sortField, sortOrder);
   };
 
   const getOrdering = (order) => {
@@ -72,15 +69,15 @@ export const useDesignationMaster = ({ }) => {
     }
   };
 
-  const deleteDesignationDetail = (record) => {
+  const deleteDepartmentDetail = (record) => {
     setIsLoading(true);
     axios.delete(
-      `http://localhost:3001/designation/delete/${record.designationId}`
+      `http://localhost:3001/departments/delete/${record.departmentId}`
     )
       .then((res) => {
         setIsLoading(false);
         toast.success(res.data.message);
-        getDesignationDetails(
+        getDepartmentDetails(
           data.length == 1 ? currentPage - 1 : currentPage,
           pageSize,
           sortField,
@@ -95,35 +92,22 @@ export const useDesignationMaster = ({ }) => {
     const ordering = getOrdering(order);
     setSortField(field);
     setSortOrder(ordering);
-    getDesignationDetails(currentPage, pageSize, field, ordering);
-  };
-
-  const handleDropdownOpen = (open) => {
-    if (open) {
-      axios.get("http://localhost:3001/departments")
-        .then((res) => {
-          setDepartmentOptions(res?.data?.data);
-        })
-        .catch((err) => {
-          console.error("failed to load departments", err);
-          toast.error("Could not load departments");
-        });
-    }
+    getDepartmentDetails(currentPage, pageSize, field, ordering);
   };
 
   const handleSave = (values) => {
     const url = !!values.isNew
-      ? "http://localhost:3001/designation/create"
-      : `http://localhost:3001/designation/update/${values.designationId}`;
+      ? "http://localhost:3001/departments/create"
+      : `http://localhost:3001/departments/update/${values.departmentId}`;
     const method = !!values.isNew ? "post" : "put";
     axios({
       method,
       url,
-      data: { ...values, department: values?.department?.value },
+      data: { ...values },
     })
       .then((res) => {
         toast.success(res.data.message);
-        getDesignationDetails();
+        getDepartmentDetails();
       })
       .catch((err) => {
         toast.error(err.response.data.message);
@@ -131,15 +115,15 @@ export const useDesignationMaster = ({ }) => {
     setEditingRow(null);
   };
 
-  const editDesignationDetail = (record) => {
-    setEditingRow(record.designationId);
+  const editDepartmentDetail = (record) => {
+    setEditingRow(record.departmentId);
   };
 
   const onChangeSearch = useCallback(
     debounce((e) => {
       let searchValue = e?.target?.value?.trim();
       setSearch(searchValue);
-      getDesignationDetails(
+      getDepartmentDetails(
         currentPage,
         pageSize,
         sortField,
@@ -151,38 +135,31 @@ export const useDesignationMaster = ({ }) => {
   );
 
   const handleCancel = () => {
-    const row = data.find((item) => item.designationId === editingRow);
+    const row = data.find((item) => item.departmentId === editingRow);
     if (row?.isNew) {
       setData((prevData) =>
-        prevData.filter((item) => item.designationId !== editingRow)
+        prevData.filter((item) => item.departmentId !== editingRow)
       );
     }
     setEditingRow(null);
   };
 
-  const handleDropdownChange = (value, e) => {
-    designationRef.current?.setFieldValue("department", e);
-  };
-
   return {
-    designationRef,
+    departmentRef,
     isLoading,
     totalEntries,
-    departmentOptions,
     data,
     currentPage,
     pageSize,
     editingRow,
-    getDesignationDetails,
+    getDepartmentDetails,
     handleAddRow,
     handlePageChange,
-    deleteDesignationDetail,
+    deleteDepartmentDetail,
     handleTableChange,
-    handleDropdownOpen,
     handleSave,
-    editDesignationDetail,
+    editDepartmentDetail,
     onChangeSearch,
     handleCancel,
-    handleDropdownChange
   }
 }

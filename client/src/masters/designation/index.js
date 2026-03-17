@@ -30,7 +30,6 @@ const DesignationEditableTable = () => {
     handleCancel,
     handleDropdownChange
   } = useDesignationMaster({});
-  console.log("daaata", data);
 
   useEffect(() => {
     getDesignationDetails();

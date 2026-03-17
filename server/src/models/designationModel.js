@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
+const { Department } = require("./departmentModel");
 
 const Designation = sequelize.define(
   "Designation",
@@ -32,6 +33,8 @@ const Designation = sequelize.define(
     timestamps: false,
   }
 );
+
+Designation.belongsTo(Department, { foreignKey: "department" });
 
 const createDesignationTableIfNotExists = async () => {
   await Designation.sync();

@@ -274,9 +274,9 @@ const AddEmployeeDetailsForm = () => {
                             "designation",
                             !!selected
                               ? {
-                                  value: selected?.value,
-                                  label: selected?.label,
-                                }
+                                value: selected?.value,
+                                label: selected?.label,
+                              }
                               : null
                           );
                         }}
@@ -357,9 +357,9 @@ const AddEmployeeDetailsForm = () => {
                             "country",
                             !!selected
                               ? {
-                                  value: selected?.value,
-                                  label: selected?.label,
-                                }
+                                value: selected?.value,
+                                label: selected?.label,
+                              }
                               : null
                           ).then(() => {
                             if (values?.country?.value != selected?.value) {
@@ -389,9 +389,8 @@ const AddEmployeeDetailsForm = () => {
                         </b>
                       </div>
                     </div>
-                  </Col>{" "}
+                  </Col>
                   <Col xs={12} sm={12} md={12} lg={6}>
-                    {console.log("!values?.country", values?.country)}
                     <div className="form-group">
                       <label>State:</label>
                       <Select
@@ -404,9 +403,9 @@ const AddEmployeeDetailsForm = () => {
                             "state",
                             !!selected
                               ? {
-                                  value: selected?.value,
-                                  label: selected?.label,
-                                }
+                                value: selected?.value,
+                                label: selected?.label,
+                              }
                               : null
                           ).then(() => {
                             if (values?.state?.value != selected?.value) {
@@ -449,9 +448,9 @@ const AddEmployeeDetailsForm = () => {
                             "city",
                             !!selected
                               ? {
-                                  value: selected?.value,
-                                  label: selected?.label,
-                                }
+                                value: selected?.value,
+                                label: selected?.label,
+                              }
                               : null
                           );
                         }}

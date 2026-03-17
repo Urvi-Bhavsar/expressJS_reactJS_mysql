@@ -31,6 +31,11 @@ const Sidebar = ({ collapsed }) => {
           label: "Designations",
           path: "/designations",
         },
+        {
+          key: "department_master",
+          label: "Departments",
+          path: "/departments",
+        },
         { key: "skill_master", label: "Skills", path: "/skills" },
       ],
     },

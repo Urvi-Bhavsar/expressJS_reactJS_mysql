@@ -1,11 +1,12 @@
 const { Op } = require("sequelize");
-const { Designation, createDesignationTableIfNotExists } = require("../models/designationModel");
+const { Designation } = require("../models/designationModel");
+const { Department } = require("../models/departmentModel");
 
 const createDesignation = async (
   name,
   jobDescription,
   reportingManager,
-  department
+  department,
 ) => {
   return await Designation.create({
     name,
@@ -20,7 +21,7 @@ const getAllDesignation = async (
   limit,
   sortOrder,
   sortField,
-  search
+  search,
 ) => {
   const validSortFields = [
     "designationId",
@@ -50,6 +51,14 @@ const getAllDesignation = async (
   return await Designation.findAll({
     where: whereCondition,
     order: [[field, order]],
+    required: true,
+    include: [
+      {
+        model: Department,
+        attributes: ["departmentId", "name"],
+      },
+    ],
+    subQuery: false,
     limit,
     offset,
   });
@@ -60,7 +69,7 @@ const updateDesignationById = async (
   department,
   jobDescription,
   name,
-  reportingManager
+  reportingManager,
 ) => {
   const affectedRows = await Designation.update(
     {
@@ -71,7 +80,7 @@ const updateDesignationById = async (
     },
     {
       where: { designationId: id },
-    }
+    },
   );
   return { affectedRows };
 };
@@ -86,7 +95,6 @@ const deleteDesignationById = async (id) => {
 
 module.exports = {
   createDesignation,
-  createDesignationTableIfNotExists,
   getAllDesignation,
   updateDesignationById,
   deleteDesignationById,
