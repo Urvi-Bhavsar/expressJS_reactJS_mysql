@@ -13,6 +13,7 @@ const useAddEmployee = ({ state, employeeDetailsRef }) => {
   const [countryDropdownData, setCountryDropdownData] = useState([]);
   const [stateDropdownData, setStateDropdownData] = useState([]);
   const [cityDropdownData, setCityDropdownData] = useState([]);
+  const [uploadedKeys, setUploadedKeys] = useState([]);
 
   const handleFormSubmit = (values) => {
     const url = !!editID
@@ -20,7 +21,7 @@ const useAddEmployee = ({ state, employeeDetailsRef }) => {
       : "http://localhost:3001/employee/create";
 
     const method = !!editID ? "put" : "post";
-    Axios({ method, url, data: values })
+    Axios({ method, url, data: { ...values, document_files: uploadedKeys } })
       .then((res) => {
         toast.success(res.data.message);
         !!editID && setEditID("");
@@ -34,6 +35,15 @@ const useAddEmployee = ({ state, employeeDetailsRef }) => {
   useEffect(() => {
     !!editID && handleRetriveData();
   }, [editID]);
+
+  const handleUploadSuccess = ({ key, signedUrl, file }) => {
+    console.log("Uploaded to S3:", key);
+    setUploadedKeys((prev) => [...prev, key]);
+  };
+
+  const handleDeleteSuccess = (key) => {
+    setUploadedKeys((prev) => prev.filter((k) => k !== key));
+  };
 
   const handleRetriveData = () => {
     Axios.patch(`http://localhost:3001/retrive-employee-details/${editID}`)
@@ -75,13 +85,13 @@ const useAddEmployee = ({ state, employeeDetailsRef }) => {
         break;
       case "state":
         response = await Axios.get(
-          `http://localhost:3001/states/?countryID=${values.country.value}`
+          `http://localhost:3001/states/?countryID=${values.country.value}`,
         );
         setStateDropdownData(response.data.data);
         break;
       case "city":
         response = await Axios.get(
-          `http://localhost:3001/cities/?stateID=${values.state.value}`
+          `http://localhost:3001/cities/?stateID=${values.state.value}`,
         );
         setCityDropdownData(response.data.data);
         break;
@@ -100,6 +110,8 @@ const useAddEmployee = ({ state, employeeDetailsRef }) => {
     cityDropdownData,
     handleFormSubmit,
     fetchDropdownOptions,
+    handleUploadSuccess,
+    handleDeleteSuccess,
   };
 };
 

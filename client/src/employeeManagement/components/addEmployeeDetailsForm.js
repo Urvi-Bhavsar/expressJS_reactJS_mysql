@@ -8,6 +8,7 @@ import { Card, Button, Row, Col, DatePicker, Radio, Select } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RedoOutlined, CheckOutlined, LeftOutlined } from "@ant-design/icons";
 import moment from "moment";
+import FileUpload from "../../common/fileUpload";
 
 const AddEmployeeDetailsForm = () => {
   const navigate = useNavigate();
@@ -23,10 +24,13 @@ const AddEmployeeDetailsForm = () => {
     cityDropdownData,
     handleFormSubmit,
     fetchDropdownOptions,
+    handleUploadSuccess,
+    handleDeleteSuccess,
   } = useAddEmployee({
     state,
     employeeDetailsRef,
   });
+
   return (
     <Formik
       initialValues={{
@@ -45,6 +49,7 @@ const AddEmployeeDetailsForm = () => {
         country: null,
         state: null,
         city: null,
+        document_files: [],
       }}
       validationSchema={employeeDetailsSchema}
       innerRef={employeeDetailsRef}
@@ -271,17 +276,17 @@ const AddEmployeeDetailsForm = () => {
                         className="datepicker"
                         disabled={state?.isView}
                         onChange={(selected) => {
-                          setFieldTouched("designation", false)
-                          setFieldValue("designation", null)
+                          setFieldTouched("designation", false);
+                          setFieldValue("designation", null);
                           setFieldTouched("department");
                           setFieldValue(
                             "department",
                             !!selected
                               ? {
-                                value: selected?.value,
-                                label: selected?.label,
-                              }
-                              : null
+                                  value: selected?.value,
+                                  label: selected?.label,
+                                }
+                              : null,
                           );
                         }}
                         value={values.department}
@@ -316,10 +321,10 @@ const AddEmployeeDetailsForm = () => {
                             "designation",
                             !!selected
                               ? {
-                                value: selected?.value,
-                                label: selected?.label,
-                              }
-                              : null
+                                  value: selected?.value,
+                                  label: selected?.label,
+                                }
+                              : null,
                           );
                         }}
                         value={values.designation}
@@ -362,7 +367,7 @@ const AddEmployeeDetailsForm = () => {
                             selected?.map(({ value, label }) => ({
                               value,
                               label,
-                            }))
+                            })),
                           );
                         }}
                         mode="multiple"
@@ -399,10 +404,10 @@ const AddEmployeeDetailsForm = () => {
                             "country",
                             !!selected
                               ? {
-                                value: selected?.value,
-                                label: selected?.label,
-                              }
-                              : null
+                                  value: selected?.value,
+                                  label: selected?.label,
+                                }
+                              : null,
                           ).then(() => {
                             if (values?.country?.value != selected?.value) {
                               setFieldValue("city", null);
@@ -445,10 +450,10 @@ const AddEmployeeDetailsForm = () => {
                             "state",
                             !!selected
                               ? {
-                                value: selected?.value,
-                                label: selected?.label,
-                              }
-                              : null
+                                  value: selected?.value,
+                                  label: selected?.label,
+                                }
+                              : null,
                           ).then(() => {
                             if (values?.state?.value != selected?.value) {
                               setFieldValue("city", null);
@@ -476,6 +481,15 @@ const AddEmployeeDetailsForm = () => {
                     </div>
                   </Col>{" "}
                   <Col xs={12} sm={12} md={12} lg={6}>
+                    <FileUpload
+                      folder="inward-docs"
+                      label="Supporting Document"
+                      multiple={false}
+                      onUploadSuccess={handleUploadSuccess}
+                      onDeleteSuccess={handleDeleteSuccess}
+                    />
+                  </Col>
+                  <Col xs={12} sm={12} md={12} lg={6}>
                     <div className="form-group">
                       <label>City:</label>
                       <Select
@@ -490,10 +504,10 @@ const AddEmployeeDetailsForm = () => {
                             "city",
                             !!selected
                               ? {
-                                value: selected?.value,
-                                label: selected?.label,
-                              }
-                              : null
+                                  value: selected?.value,
+                                  label: selected?.label,
+                                }
+                              : null,
                           );
                         }}
                         value={values.city}
