@@ -57,6 +57,7 @@ const useEmployeeDetailsList = () => {
     order = sortOrder,
     searchParams = search
   ) => {
+    setIsLoading(true);
     Axios.get(
       `http://localhost:3001/get-employee-details/?page=${page}&pageSize=${size}&sortField=${field}&sortOrder=${order}&search=${searchParams}`
     )
@@ -68,7 +69,11 @@ const useEmployeeDetailsList = () => {
         setTotalEntries(res.data.totalEntries);
         setEmployeeDetails(res.data.data);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        setIsLoading(false);
+        const errorMessage = err.response?.data?.message || "Failed to fetch employee details";
+        toast.error(errorMessage);
+      });
   };
 
   const handleTableChange = (_pagination, _filters, sorter) => {
@@ -87,21 +92,70 @@ const useEmployeeDetailsList = () => {
 
   const handleDownload = () => {
     Axios.get("http://localhost:3001/download-employee-data", {
-      responseType: "blob", // Important: Ensure you're receiving the file as a Blob
-    }).then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      responseType: "blob",
+    })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
 
-      // Create an anchor element to trigger the download
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "employees.xlsx"); // Set the file name
-      document.body.appendChild(link);
-      link.click();
+        // Create an anchor element to trigger the download
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "employees.xlsx");
+        document.body.appendChild(link);
+        link.click();
 
-      // Clean up the temporary URL after download
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    });
+        // Clean up the temporary URL after download
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        toast.success("Employee data downloaded successfully");
+      })
+      .catch(async (err) => {
+        // Handle blob error response
+        if (err.response && err.response.data instanceof Blob) {
+          try {
+            const text = await err.response.data.text();
+            const errorData = JSON.parse(text);
+            toast.error(errorData.message || errorData.error || "Failed to download employee data");
+          } catch (parseError) {
+            toast.error("Failed to download employee data");
+          }
+        } else {
+          const errorMessage = err.response?.data?.message || err.response?.data?.error || "Failed to download employee data";
+          toast.error(errorMessage);
+        }
+      });
+  };
+
+  const handleDownloadSample = () => {
+    Axios.get("http://localhost:3001/download-sample-template", {
+      responseType: "blob",
+    })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "Employee_Upload_Template.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        toast.success("Sample template downloaded successfully! Check the Instructions sheet for detailed guide.");
+      })
+      .catch(async (err) => {
+        // Handle blob error response
+        if (err.response && err.response.data instanceof Blob) {
+          try {
+            const text = await err.response.data.text();
+            const errorData = JSON.parse(text);
+            toast.error(errorData.message || errorData.error || "Failed to download sample template");
+          } catch (parseError) {
+            toast.error("Failed to download sample template");
+          }
+        } else {
+          const errorMessage = err.response?.data?.message || err.response?.data?.error || "Failed to download sample template";
+          toast.error(errorMessage);
+        }
+      });
   };
 
   const handleUpload = async (e) => {
@@ -131,18 +185,30 @@ const useEmployeeDetailsList = () => {
   };
 
   const deleteEmployeeDetail = (id) => {
+    setIsLoading(true);
     Axios.delete(`http://localhost:3001/delete-employee-details/${id}`)
       .then((res) => {
         setIsLoading(false);
         toast.success(res.data.message);
+        
+        // If deleting the last item on the current page, go to previous page
+        // But ensure we never go below page 1
+        const newPage = employeeDetails.length === 1 && currentPage > 1 
+          ? currentPage - 1 
+          : currentPage;
+        
         getEmployeeDetails(
-          employeeDetails.length == 1 ? currentPage - 1 : currentPage,
+          newPage,
           pageSize,
           sortField,
           sortOrder
         );
       })
-      .catch((err) => {});
+      .catch((err) => {
+        setIsLoading(false);
+        const errorMessage = err.response?.data?.message || "Failed to delete employee";
+        toast.error(errorMessage);
+      });
   };
 
   return {
@@ -158,6 +224,7 @@ const useEmployeeDetailsList = () => {
     deleteEmployeeDetail,
     handleUpload,
     handleDownload,
+    handleDownloadSample,
     handleButtonClick,
     onChangeSearch,
   };

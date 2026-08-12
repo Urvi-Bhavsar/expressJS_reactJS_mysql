@@ -6,10 +6,12 @@ const {
   deleteEmployeeHandler,
   downloadEmployeeDataHandler,
   handleUploadEmployeeDetails,
+  downloadSampleFileHandler,
 } = require("../controllers/employeeController");
 const {
   createEmployeeValidation,
 } = require("../serializers/employeeSerializer");
+const { checkDbConnection } = require("../config/db");
 const multer = require("multer");
 
 // below commented code is for when we need to store file in our code in storage folder
@@ -40,6 +42,9 @@ const upload = multer({ storage });
 
 const router = express.Router();
 
+// Apply database connection check to all routes
+router.use(checkDbConnection);
+
 router.post("/create", createEmployeeValidation, createEmployeeHandler);
 router.get("/get-employee-details", getAllEmployeesHandler);
 router.put(
@@ -49,6 +54,7 @@ router.put(
 );
 router.delete("/delete-employee-details/:id", deleteEmployeeHandler);
 router.get("/download-employee-data", downloadEmployeeDataHandler);
+router.get("/download-sample-template", downloadSampleFileHandler);
 router.post(
   "/upload-employee-details",
   upload.single("file"),

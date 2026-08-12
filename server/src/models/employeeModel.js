@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const { db } = require("../config/db");
 
 const createEmployee = (name, age, position, email, officeDays, callback) => {
   // This query is used for inserting a single row into the table at a time, with placeholders for each column value. The ? placeholders are replaced with actual values one by one.
@@ -23,6 +23,10 @@ const getAllEmployees = (
   search,
   callback
 ) => {
+  // Ensure offset and limit are valid positive integers
+  const safeOffset = Math.max(0, parseInt(offset, 10) || 0);
+  const safeLimit = Math.max(1, parseInt(limit, 10) || 5);
+  
   // Validate sortField and sortOrder (optional)
   const validSortFields = [
     "employeeId",
@@ -58,10 +62,10 @@ const getAllEmployees = (
         `%${search}%`,
         `%${search}%`,
         `%${search}%`,
-        limit,
-        offset,
+        safeLimit,
+        safeOffset,
       ]
-    : [limit, offset];
+    : [safeLimit, safeOffset];
 
   db.query(query, queryParams, (err, result) => {
     callback(err, result);

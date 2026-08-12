@@ -12,7 +12,7 @@ const AddEmployeeDetailsForm = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const employeeDetailsRef = useRef();
-  const { editID, handleFormSubmit } = useAddEmployee({ state });
+  const { editID, handleFormSubmit } = useAddEmployee({ state, employeeDetailsRef });
 
   return (
     <Formik
@@ -25,6 +25,7 @@ const AddEmployeeDetailsForm = () => {
       }}
       validationSchema={employeeDetailsSchema}
       innerRef={employeeDetailsRef}
+      enableReinitialize={true}
       onSubmit={(values) => {
         handleFormSubmit(values);
       }}
@@ -51,8 +52,8 @@ const AddEmployeeDetailsForm = () => {
             >
               <form
                 onSubmit={(e) => {
-                  handleSubmit();
                   e.preventDefault();
+                  handleSubmit();
                 }}
               >
                 <Row gutter={[16, 16]}>

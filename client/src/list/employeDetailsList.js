@@ -29,6 +29,7 @@ const EmployeDetailsList = () => {
     deleteEmployeeDetail,
     handleUpload,
     handleDownload,
+    handleDownloadSample,
     handleButtonClick,
     onChangeSearch,
   } = useEmployeeDetailsList();
@@ -85,6 +86,29 @@ const EmployeDetailsList = () => {
         marginTop: "20px",
       }}
     >
+      {/* Info Banner */}
+      <Row style={{ marginBottom: "15px" }}>
+        <Col span={24}>
+          <div
+            style={{
+              padding: "12px 16px",
+              backgroundColor: "#e6f7ff",
+              border: "1px solid #91d5ff",
+              borderRadius: "4px",
+              fontSize: "14px",
+            }}
+          >
+            <strong>💡 Quick Import Guide:</strong> Click{" "}
+            <strong style={{ color: "#52c41a" }}>
+              "Download Sample Template"
+            </strong>{" "}
+            to get an Excel file with instructions and sample data. Fill in your
+            employee details and upload using{" "}
+            <strong>"Import Employee Details"</strong>.
+          </div>
+        </Col>
+      </Row>
+
       <Row
         style={{
           width: "100%",
@@ -112,7 +136,7 @@ const EmployeDetailsList = () => {
           />
         </Col>
 
-        <Col style={{ display: "flex", gap: "10px" }}>
+        <Col style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
           <Button
             icon={<PlusOutlined />}
             size="large"
@@ -124,10 +148,19 @@ const EmployeDetailsList = () => {
           </Button>
           <Button
             icon={<DownloadOutlined />}
+            onClick={handleDownloadSample}
+            size="large"
+            type="primary"
+            style={{ backgroundColor: "#52c41a" }}
+          >
+            Download Sample Template
+          </Button>
+          <Button
+            icon={<DownloadOutlined />}
             onClick={handleDownload}
             size="large"
           >
-            Download Employee Details
+            Download Employee Data
           </Button>
           <Button
             icon={<UploadOutlined />}

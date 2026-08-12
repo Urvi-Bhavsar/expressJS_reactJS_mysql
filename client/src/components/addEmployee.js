@@ -87,8 +87,8 @@ const AddEmployee = () => {
               <div className="information">
                 <form
                   onSubmit={(e) => {
-                    handleSubmit();
                     e.preventDefault();
+                    handleSubmit();
                   }}
                 >
                   <label>Name:</label>
