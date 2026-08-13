@@ -111,7 +111,7 @@ Returns server and database connection status.
 
 3. Check health endpoint:
    ```
-   https://expressjs-reactjs-mysql.onrender.com/health
+   `${process.env.VITE_API_URL}/health`
    ```
 
 ### Common Error Solutions

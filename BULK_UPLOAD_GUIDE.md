@@ -227,7 +227,7 @@ You can add Excel data validation to prevent errors:
 If you want to upload programmatically:
 
 ```bash
-POST https://expressjs-reactjs-mysql.onrender.com/upload-employee-details
+POST `${process.env.VITE_API_URL}/upload-employee-details`
 Content-Type: multipart/form-data
 
 file: [Excel file]

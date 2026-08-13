@@ -107,7 +107,7 @@ If you want to use different credentials:
 ### Method 1: Health Check Endpoint
 Once the server is running, visit:
 ```
-https://expressjs-reactjs-mysql.onrender.com/health
+`${process.env.VITE_API_URL}/health`
 ```
 
 This will show:
@@ -202,7 +202,7 @@ EXIT;
 - [ ] User credentials configured in `.env`
 - [ ] DBeaver connected (optional)
 - [ ] Server started (`npm start` in server directory)
-- [ ] Health check passed (`https://expressjs-reactjs-mysql.onrender.com/health`)
+- [ ] Health check passed (`${process.env.VITE_API_URL}/health`)
 - [ ] Table auto-created on first API call
 
 ## Additional Notes

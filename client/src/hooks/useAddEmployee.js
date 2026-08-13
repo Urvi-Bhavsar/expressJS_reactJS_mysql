@@ -17,8 +17,8 @@ const useAddEmployee = ({ state, employeeDetailsRef }) => {
 
   const handleFormSubmit = (values) => {
     const url = !!editID
-      ? `https://expressjs-reactjs-mysql.onrender.com/update-employee-details/${editID}`
-      : "https://expressjs-reactjs-mysql.onrender.com/create";
+      ? `${process.env.REACT_APP_API_URL}/update-employee-details/${editID}`
+      : `${process.env.REACT_APP_API_URL}/create`;
 
     const method = !!editID ? "put" : "post";
     

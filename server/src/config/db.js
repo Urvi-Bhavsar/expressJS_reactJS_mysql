@@ -18,6 +18,7 @@ const dbConfig = {
     rejectUnauthorized: true
   }
 };
+console.log("dbConfig", dbConfig);
 
 const db = mysql.createPool(dbConfig);
 
