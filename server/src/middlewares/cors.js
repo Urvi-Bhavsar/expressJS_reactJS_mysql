@@ -1,9 +1,13 @@
 const cors = require("cors");
 
 const corsMiddleware = cors({
-  origin: "*", // Allow all origins
-  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://express-js-react-js-mysql-323h.vercel.app/",
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 });
 
 module.exports = corsMiddleware;

@@ -23,7 +23,7 @@ npm start
 You should now see:
 ```
 🚀 Server running on port 4000
-📊 Health check available at: http://localhost:4000/health
+📊 Health check available at: https://expressjs-reactjs-mysql.onrender.com/health
 ✅ Connected to MySQL database successfully.
 ⚠️  Email service configuration error:
    Message: Invalid login...
@@ -50,7 +50,7 @@ npm run check-db
 npm start
 
 # Check status
-curl http://localhost:4000/health
+curl hhttps://expressjs-reactjs-mysql.onrender.com/health
 ```
 
 ## Quick Actions
@@ -93,7 +93,7 @@ See [EMAIL_SETUP.md](EMAIL_SETUP.md) for detailed instructions.
 
 ### Test 1: Create Employee
 ```bash
-curl -X POST http://localhost:4000/create \
+curl -X POST https://expressjs-reactjs-mysql.onrender.com/create \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Test User",
@@ -108,12 +108,12 @@ Should work even if email fails!
 
 ### Test 2: Get Employees
 ```bash
-curl http://localhost:4000/get-employee-details
+curl https://expressjs-reactjs-mysql.onrender.com/get-employee-details
 ```
 
 ### Test 3: Health Check
 ```bash
-curl http://localhost:4000/health
+curl https://expressjs-reactjs-mysql.onrender.com/health
 ```
 
 ## Summary

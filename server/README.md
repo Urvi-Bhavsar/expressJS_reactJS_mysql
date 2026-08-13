@@ -111,7 +111,7 @@ Returns server and database connection status.
 
 3. Check health endpoint:
    ```
-   http://localhost:4000/health
+   https://expressjs-reactjs-mysql.onrender.com/health
    ```
 
 ### Common Error Solutions
