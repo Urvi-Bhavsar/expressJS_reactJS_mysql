@@ -37,7 +37,7 @@ const useEmployeeDetailsList = () => {
     ) => {
       setIsLoading(true);
       Axios.get(
-        `http://localhost:4000/get-employee-details/?page=${page}&pageSize=${size}&sortField=${field}&sortOrder=${order}&search=${searchParams}`
+        `https://expressjs-reactjs-mysql.onrender.com/get-employee-details/?page=${page}&pageSize=${size}&sortField=${field}&sortOrder=${order}&search=${searchParams}`
       )
         .then((res) => {
           setIsLoading(false);
@@ -108,7 +108,7 @@ const useEmployeeDetailsList = () => {
   };
 
   const handleDownload = () => {
-    Axios.get("http://localhost:4000/download-employee-data", {
+    Axios.get("https://expressjs-reactjs-mysql.onrender.com/download-employee-data", {
       responseType: "blob",
     })
       .then((response) => {
@@ -144,7 +144,7 @@ const useEmployeeDetailsList = () => {
   };
 
   const handleDownloadSample = () => {
-    Axios.get("http://localhost:4000/download-sample-template", {
+    Axios.get("https://expressjs-reactjs-mysql.onrender.com/download-sample-template", {
       responseType: "blob",
     })
       .then((response) => {
@@ -191,7 +191,7 @@ const useEmployeeDetailsList = () => {
     setUploading(true);
     try {
       const response = await Axios.post(
-        "http://localhost:4000/upload-employee-details",
+        "https://expressjs-reactjs-mysql.onrender.com/upload-employee-details",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -209,7 +209,7 @@ const useEmployeeDetailsList = () => {
 
   const deleteEmployeeDetail = (id) => {
     setIsLoading(true);
-    Axios.delete(`http://localhost:4000/delete-employee-details/${id}`)
+    Axios.delete(`https://expressjs-reactjs-mysql.onrender.com/delete-employee-details/${id}`)
       .then((res) => {
         setIsLoading(false);
         toast.success(res.data.message);
