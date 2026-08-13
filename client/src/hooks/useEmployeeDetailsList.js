@@ -63,6 +63,7 @@ const useEmployeeDetailsList = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     getEmployeeDetails();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Keep a ref to the latest getEmployeeDetails so the debounced function
