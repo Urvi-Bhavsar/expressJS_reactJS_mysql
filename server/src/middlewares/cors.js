@@ -1,7 +1,7 @@
 const cors = require("cors");
 
 const allowedOrigins = [
-  "https://express-js-react-js-mysql-323h.vercel.app/",
+  "https://express-js-react-js-mysql-323h.vercel.app",
   "http://localhost:3000",
   "http://localhost:5173",
 ];
