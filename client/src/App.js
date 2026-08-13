@@ -6,7 +6,6 @@ import {
   MenuFoldOutlined,
   EditOutlined,
 } from "@ant-design/icons";
-import AddEmployee from "./components/addEmployee";
 import EmployeDetailsList from "./list/employeDetailsList";
 import "./App.css";
 import { TbBrandNodejs } from "react-icons/tb";
