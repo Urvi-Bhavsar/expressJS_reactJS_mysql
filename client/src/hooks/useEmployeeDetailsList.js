@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
 
@@ -14,30 +14,7 @@ const useEmployeeDetailsList = () => {
   const [sortOrder, setSortOrder] = useState("");
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    getEmployeeDetails();
-  }, []);
-
   const fileInputRef = useRef(null);
-
-  const onChangeSearch = useCallback(
-    debounce((e) => {
-      let searchValue = e?.target?.value?.trim();
-      setSearch(searchValue);
-      getEmployeeDetails(
-        currentPage,
-        pageSize,
-        sortField,
-        sortOrder,
-        searchValue
-      );
-    }, 500),
-    [1000]
-  );
-
-  const handleButtonClick = () => {
-    fileInputRef.current.click();
-  };
 
   const getOrdering = (order) => {
     switch (order) {
@@ -50,30 +27,69 @@ const useEmployeeDetailsList = () => {
     }
   };
 
-  const getEmployeeDetails = (
-    page = currentPage,
-    size = pageSize,
-    field = sortField,
-    order = sortOrder,
-    searchParams = search
-  ) => {
-    setIsLoading(true);
-    Axios.get(
-      `http://localhost:4000/get-employee-details/?page=${page}&pageSize=${size}&sortField=${field}&sortOrder=${order}&search=${searchParams}`
-    )
-      .then((res) => {
-        setIsLoading(false);
-        toast.success(res.data.message);
-        setCurrentPage(res.data.currentPage);
-        setPageSize(res.data.pageSize);
-        setTotalEntries(res.data.totalEntries);
-        setEmployeeDetails(res.data.data);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        const errorMessage = err.response?.data?.message || "Failed to fetch employee details";
-        toast.error(errorMessage);
-      });
+  const getEmployeeDetails = useCallback(
+    (
+      page = currentPage,
+      size = pageSize,
+      field = sortField,
+      order = sortOrder,
+      searchParams = search
+    ) => {
+      setIsLoading(true);
+      Axios.get(
+        `http://localhost:4000/get-employee-details/?page=${page}&pageSize=${size}&sortField=${field}&sortOrder=${order}&search=${searchParams}`
+      )
+        .then((res) => {
+          setIsLoading(false);
+          toast.success(res.data.message);
+          setCurrentPage(res.data.currentPage);
+          setPageSize(res.data.pageSize);
+          setTotalEntries(res.data.totalEntries);
+          setEmployeeDetails(res.data.data);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          const errorMessage =
+            err.response?.data?.message || "Failed to fetch employee details";
+          toast.error(errorMessage);
+        });
+    },
+    [currentPage, pageSize, sortField, sortOrder, search]
+  );
+
+  // Run once on mount. getEmployeeDetails is intentionally omitted since it's
+  // recreated whenever its own state deps change, and this effect should only
+  // fire on initial load.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    getEmployeeDetails();
+  }, []);
+
+  // Keep a ref to the latest getEmployeeDetails so the debounced function
+  // (created once) never calls a stale closure.
+  const getEmployeeDetailsRef = useRef(getEmployeeDetails);
+  useEffect(() => {
+    getEmployeeDetailsRef.current = getEmployeeDetails;
+  }, [getEmployeeDetails]);
+
+  const onChangeSearch = useMemo(
+    () =>
+      debounce((e) => {
+        const searchValue = e?.target?.value?.trim();
+        setSearch(searchValue);
+        getEmployeeDetailsRef.current(
+          currentPage,
+          pageSize,
+          sortField,
+          sortOrder,
+          searchValue
+        );
+      }, 500),
+    [currentPage, pageSize, sortField, sortOrder]
+  );
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
   };
 
   const handleTableChange = (_pagination, _filters, sorter) => {
@@ -96,31 +112,31 @@ const useEmployeeDetailsList = () => {
     })
       .then((response) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
-
-        // Create an anchor element to trigger the download
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", "employees.xlsx");
         document.body.appendChild(link);
         link.click();
-
-        // Clean up the temporary URL after download
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
         toast.success("Employee data downloaded successfully");
       })
       .catch(async (err) => {
-        // Handle blob error response
         if (err.response && err.response.data instanceof Blob) {
           try {
             const text = await err.response.data.text();
             const errorData = JSON.parse(text);
-            toast.error(errorData.message || errorData.error || "Failed to download employee data");
+            toast.error(
+              errorData.message || errorData.error || "Failed to download employee data"
+            );
           } catch (parseError) {
             toast.error("Failed to download employee data");
           }
         } else {
-          const errorMessage = err.response?.data?.message || err.response?.data?.error || "Failed to download employee data";
+          const errorMessage =
+            err.response?.data?.message ||
+            err.response?.data?.error ||
+            "Failed to download employee data";
           toast.error(errorMessage);
         }
       });
@@ -139,20 +155,26 @@ const useEmployeeDetailsList = () => {
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-        toast.success("Sample template downloaded successfully! Check the Instructions sheet for detailed guide.");
+        toast.success(
+          "Sample template downloaded successfully! Check the Instructions sheet for detailed guide."
+        );
       })
       .catch(async (err) => {
-        // Handle blob error response
         if (err.response && err.response.data instanceof Blob) {
           try {
             const text = await err.response.data.text();
             const errorData = JSON.parse(text);
-            toast.error(errorData.message || errorData.error || "Failed to download sample template");
+            toast.error(
+              errorData.message || errorData.error || "Failed to download sample template"
+            );
           } catch (parseError) {
             toast.error("Failed to download sample template");
           }
         } else {
-          const errorMessage = err.response?.data?.message || err.response?.data?.error || "Failed to download sample template";
+          const errorMessage =
+            err.response?.data?.message ||
+            err.response?.data?.error ||
+            "Failed to download sample template";
           toast.error(errorMessage);
         }
       });
@@ -190,19 +212,13 @@ const useEmployeeDetailsList = () => {
       .then((res) => {
         setIsLoading(false);
         toast.success(res.data.message);
-        
-        // If deleting the last item on the current page, go to previous page
-        // But ensure we never go below page 1
-        const newPage = employeeDetails.length === 1 && currentPage > 1 
-          ? currentPage - 1 
-          : currentPage;
-        
-        getEmployeeDetails(
-          newPage,
-          pageSize,
-          sortField,
-          sortOrder
-        );
+
+        const newPage =
+          employeeDetails.length === 1 && currentPage > 1
+            ? currentPage - 1
+            : currentPage;
+
+        getEmployeeDetails(newPage, pageSize, sortField, sortOrder);
       })
       .catch((err) => {
         setIsLoading(false);
