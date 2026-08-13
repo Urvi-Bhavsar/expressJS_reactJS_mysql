@@ -33,7 +33,7 @@ DB_HOST = localhost
 DB_USER = root
 DB_PASSWORD = root
 DB_NAME = employee_management
-PORT = 3001
+PORT = 4000
 ```
 
 ### 4. Start Application
@@ -196,7 +196,7 @@ npm start
 ```
 
 Look for:
-- ✅ Server running on port 3001
+- ✅ Server running on port 4000
 - ✅ Connected to MySQL database
 - ⚠️  Email notifications status (optional)
 

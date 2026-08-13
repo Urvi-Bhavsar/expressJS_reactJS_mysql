@@ -17,8 +17,8 @@ const useAddEmployee = ({ state, employeeDetailsRef }) => {
 
   const handleFormSubmit = (values) => {
     const url = !!editID
-      ? `http://localhost:3001/update-employee-details/${editID}`
-      : "http://localhost:3001/create";
+      ? `http://localhost:4000/update-employee-details/${editID}`
+      : "http://localhost:4000/create";
 
     const method = !!editID ? "put" : "post";
     

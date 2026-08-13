@@ -22,8 +22,8 @@ npm start
 
 You should now see:
 ```
-🚀 Server running on port 3001
-📊 Health check available at: http://localhost:3001/health
+🚀 Server running on port 4000
+📊 Health check available at: http://localhost:4000/health
 ✅ Connected to MySQL database successfully.
 ⚠️  Email service configuration error:
    Message: Invalid login...
@@ -50,7 +50,7 @@ npm run check-db
 npm start
 
 # Check status
-curl http://localhost:3001/health
+curl http://localhost:4000/health
 ```
 
 ## Quick Actions
@@ -93,7 +93,7 @@ See [EMAIL_SETUP.md](EMAIL_SETUP.md) for detailed instructions.
 
 ### Test 1: Create Employee
 ```bash
-curl -X POST http://localhost:3001/create \
+curl -X POST http://localhost:4000/create \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Test User",
@@ -108,12 +108,12 @@ Should work even if email fails!
 
 ### Test 2: Get Employees
 ```bash
-curl http://localhost:3001/get-employee-details
+curl http://localhost:4000/get-employee-details
 ```
 
 ### Test 3: Health Check
 ```bash
-curl http://localhost:3001/health
+curl http://localhost:4000/health
 ```
 
 ## Summary
@@ -142,7 +142,7 @@ npm start
 ```
 
 Look for these messages:
-- ✅ `Server running on port 3001`
+- ✅ `Server running on port 4000`
 - ✅ `Connected to MySQL database` OR error with instructions
 - ✅ `Email service is ready` OR `Email notifications are DISABLED`
 

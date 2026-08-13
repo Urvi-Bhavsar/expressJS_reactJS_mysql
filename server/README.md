@@ -50,7 +50,7 @@ For detailed setup instructions, see [DATABASE_SETUP.md](../DATABASE_SETUP.md)
 Create or update `.env` file:
 ```env
 # Server
-PORT = 3001
+PORT = 4000
 
 # Database
 DB_HOST = localhost
@@ -111,7 +111,7 @@ Returns server and database connection status.
 
 3. Check health endpoint:
    ```
-   http://localhost:3001/health
+   http://localhost:4000/health
    ```
 
 ### Common Error Solutions
