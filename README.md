@@ -3,13 +3,13 @@
 A full-stack web application for managing employee data with support for single and bulk employee operations, built with React, Express.js, and MySQL/TiDB.
 
 [![Live Demo](https://img.shields.io/badge/demo-live-success)](https://express-js-react-js-mysql-323h.vercel.app)
-[![Backend](https://img.shields.io/badge/backend-render-blue)](https://expressjs-reactjs-mysql.onrender.com)
+[![Backend](https://img.shields.io/badge/backend-render-blue)](#)
 [![Database](https://img.shields.io/badge/database-TiDB-orange)](https://www.pingcap.com/tidb-serverless/)
 
 ## 🌐 Live Deployment
 
 - **Frontend**: [https://express-js-react-js-mysql-323h.vercel.app](https://express-js-react-js-mysql-323h.vercel.app)
-- **Backend API**: [https://expressjs-reactjs-mysql.onrender.com](https://expressjs-reactjs-mysql.onrender.com)
+- **Backend API**: Deployed on Render
 - **Database**: TiDB Cloud (Serverless)
 
 ## ✨ Features
@@ -228,7 +228,7 @@ npm start
    - **Output Directory**: `client/build`
 3. **Add environment variables:**
    ```
-   REACT_APP_API_URL=https://expressjs-reactjs-mysql.onrender.com
+   REACT_APP_API_URL=<your-render-backend-url>
    ```
 4. **Deploy**
 
@@ -250,7 +250,7 @@ npm start
 
 ### Base URL
 - **Local**: `http://localhost:3001`
-- **Production**: `https://expressjs-reactjs-mysql.onrender.com`
+- **Production**: Deployed on Render
 
 ### Endpoints
 
@@ -361,8 +361,8 @@ Returns Excel file with all employees.
 # API Base URL
 REACT_APP_API_URL="http://localhost:3001"
 
-# For production
-# REACT_APP_API_URL="https://expressjs-reactjs-mysql.onrender.com"
+# For production (use your Render backend URL)
+# REACT_APP_API_URL="<your-render-backend-url>"
 ```
 
 #### Backend (.env)
